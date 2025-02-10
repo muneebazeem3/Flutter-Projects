@@ -1,0 +1,39 @@
+void main() {
+  List<String> lines = [
+    "This is a really really really cool experiment really",
+    "Cute little experiment",
+    "Will it work maybe it will work do you think it will it will"
+  ];
+
+  int maxOverallFrequency = 0;
+  List<int> maxFrequencyLines = [];
+  List<List<String>> highestWordsPerLine = [];
+
+  for (var line in lines) {
+    var words = line.toLowerCase().split(RegExp(r'\s+'));
+    var wordCount = <String, int>{};
+
+    for (var word in words) {
+      wordCount[word] = (wordCount[word] ?? 0) + 1;
+    }
+
+    int maxFrequency = wordCount.values.reduce((a, b) => a > b ? a : b);
+    var maxWords = wordCount.keys.where((word) => wordCount[word] == maxFrequency).toList();
+    highestWordsPerLine.add(maxWords);
+
+    if (maxFrequency > maxOverallFrequency) {
+      maxOverallFrequency = maxFrequency;
+      maxFrequencyLines = [highestWordsPerLine.length];
+    } else if (maxFrequency == maxOverallFrequency) {
+      maxFrequencyLines.add(highestWordsPerLine.length);
+    }
+  }
+
+  print("The following words have the highest word frequency per line:");
+  for (int i = 0; i < highestWordsPerLine.length; i++) {
+    print("${highestWordsPerLine[i]} (appears in line #${i + 1})");
+  }
+
+  print("\nLines with the highest frequency words:");
+  print("Lines: ${maxFrequencyLines.join(', ')}");
+}
